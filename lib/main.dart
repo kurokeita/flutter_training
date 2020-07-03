@@ -116,6 +116,8 @@ class _HomeState extends State<Home> {
   _dislike(int i) {
     if (this._state[i]['count'] > 0) {
       this.setState(() => this._state[i]['count']--);
+    } else {
+      _showAlertDislike();
     }
   }
 
@@ -136,7 +138,19 @@ class _HomeState extends State<Home> {
   }
 
   _reset() => this.setState(() => this._lastIndex = 0);
+
+  Future _showAlertDislike() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('Like is already at 0'),
+          content: Image.asset('assets/images/pony.gif'),
+        );
+      }
+    );
+  }
 }
 
 void main () => runApp(MyApp());
-
