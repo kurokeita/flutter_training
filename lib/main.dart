@@ -1,12 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My first layout',
+      title: "Kuro's notes",
       home: Home(),
     );
   }
@@ -22,7 +24,11 @@ class _HomeState extends State<Home> {
   int _lastIndex = 0;
   final dataKey = new GlobalKey();
 
-  _HomeState();
+  @override
+  void initState() {
+    super.initState();
+    _loadState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +117,23 @@ class _HomeState extends State<Home> {
     );
   }
 
+  _loadState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String _stateString = prefs.getString('_state');
+    if (_stateString != '') {
+      var _state = jsonDecode(_stateString);
+      this.setState(() {
+        this._state = _state;
+      });
+    }
+  }
+
+  _saveState() async {
+    final prefs = await SharedPreferences.getInstance();
+    String _state = jsonEncode(this._state);
+    prefs.setString('_state', _state);
+  }
+
   _like(int i) => this.setState(() => this._state[i]['count']++);
 
   _dislike(int i) {
@@ -134,6 +157,7 @@ class _HomeState extends State<Home> {
         'count': 0
       });
       this._lastIndex = this._lastIndex + 1;
+      _saveState();
     });
   }
 
