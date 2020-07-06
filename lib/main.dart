@@ -23,7 +23,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Note> _state = [];
-  int _lastIndex = 0;
+  int _lastIndex;
   final dataKey = new GlobalKey();
 
   @override
@@ -122,12 +122,13 @@ class _HomeState extends State<Home> {
   _loadState() async {
     final prefs = await SharedPreferences.getInstance();
     final String _stateString = prefs.getString('_state');
+    final int _lastIndex = prefs.getInt('_lastIndex');
     if (!['', null].contains(_stateString)) {
       var _state = Note.decodeNotes(_stateString);
       this.setState(() {
         this._state = _state;
+        this._lastIndex = _lastIndex != null ? _lastIndex : 0;
       });
-      var test = this._state;
     }
   }
 
@@ -159,14 +160,15 @@ class _HomeState extends State<Home> {
   }
 
   _addNewEntry() {
+//    int _lastIndex = this._state.length > 0 ? this._state.last.index : 0;
     this.setState(() {
       this._state = this._state..add(new Note(this._lastIndex + 1, 0));
-      this._lastIndex = this._lastIndex + 1;
+      this._lastIndex++;
       _saveState();
     });
   }
 
-  _reset() => this.setState(() => this._lastIndex = 0);
+//  _reset() => this.setState(() => this._lastIndex = 0);
 
   Future _showAlertDislike() async {
     return showDialog<void>(
