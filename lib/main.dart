@@ -23,7 +23,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Note> _state = [];
-  int _lastIndex;
+  int _lastIndex = 0;
   final dataKey = new GlobalKey();
 
   @override
@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _listTileBuilder(int i) {
-    return Card(
+    return Dismissible(
       child: ListTile(
         leading: RawMaterialButton(
           onPressed: () => {
@@ -115,7 +115,11 @@ class _HomeState extends State<Home> {
             )
           ],
         ),
-      )
+      ),
+      key: ValueKey(this._state[i].index),
+      onDismissed: (d) => {
+        _delete(i)
+      },
     );
   }
 
@@ -136,6 +140,7 @@ class _HomeState extends State<Home> {
     final prefs = await SharedPreferences.getInstance();
     String _state = jsonEncode(this._state);
     prefs.setString('_state', _state);
+    prefs.setInt('_lastIndex', this._lastIndex);
   }
 
   _like(int i) {
@@ -160,7 +165,6 @@ class _HomeState extends State<Home> {
   }
 
   _addNewEntry() {
-//    int _lastIndex = this._state.length > 0 ? this._state.last.index : 0;
     this.setState(() {
       this._state = this._state..add(new Note(this._lastIndex + 1, 0));
       this._lastIndex++;
