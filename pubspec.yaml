@@ -27,6 +27,7 @@ dependencies:
   english_words: ^3.1.5
   scroll_to_index: any
   shared_preferences:
+  gson: ^0.1.4
 
 dev_dependencies:
   flutter_test:

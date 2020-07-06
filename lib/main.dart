@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gson/gson.dart';
+import 'models/Note.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -20,7 +22,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Map<String, int>> _state = [];
+  List<Note> _state = [];
   int _lastIndex = 0;
   final dataKey = new GlobalKey();
 
@@ -82,8 +84,8 @@ class _HomeState extends State<Home> {
           shape: CircleBorder(),
           constraints: BoxConstraints.tight(Size(40, 40)),
         ),
-        title: Text('This is line number ${this._state[i]['index']}'),
-        subtitle: Text('Liked ${this._state[i]['count']} times'),
+        title: Text('This is line number ${this._state[i].index}'),
+        subtitle: Text('Liked ${this._state[i].count} times'),
         trailing: Wrap(
           spacing: 10,
           children: <Widget>[
@@ -120,11 +122,12 @@ class _HomeState extends State<Home> {
   _loadState() async {
     final prefs = await SharedPreferences.getInstance();
     final String _stateString = prefs.getString('_state');
-    if (_stateString != '') {
-      var _state = jsonDecode(_stateString);
+    if (!['', null].contains(_stateString)) {
+      var _state = Note.decodeNotes(_stateString);
       this.setState(() {
         this._state = _state;
       });
+      var test = this._state;
     }
   }
 
@@ -134,28 +137,30 @@ class _HomeState extends State<Home> {
     prefs.setString('_state', _state);
   }
 
-  _like(int i) => this.setState(() => this._state[i]['count']++);
+  _like(int i) {
+    this.setState(() => this._state[i].count++);
+    _saveState();
+  }
 
   _dislike(int i) {
-    if (this._state[i]['count'] > 0) {
-      this.setState(() => this._state[i]['count']--);
+    if (this._state[i].count > 0) {
+      this.setState(() => this._state[i].count--);
     } else {
       _showAlertDislike();
     }
+    _saveState();
   }
 
   _delete(int i) {
     this.setState(() {
       this._state.removeAt(i);
     });
+    _saveState();
   }
 
   _addNewEntry() {
     this.setState(() {
-      this._state = this._state..add({
-        'index': this._lastIndex + 1,
-        'count': 0
-      });
+      this._state = this._state..add(new Note(this._lastIndex + 1, 0));
       this._lastIndex = this._lastIndex + 1;
       _saveState();
     });
