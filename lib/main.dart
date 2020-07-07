@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gson/gson.dart';
 import 'models/Note.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -29,6 +31,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   final _scrollController = ScrollController();
   AnimationController _hideFabAnimation;
   Animation<Offset> _offsetAnimation;
+  File _image;
+  final picker = ImagePicker();
+
 
   @override
   void initState() {
@@ -45,7 +50,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
       parent: _hideFabAnimation,
       curve: Curves.easeInSine,
     ));
-    _hideFabAnimation.reverse();
   }
 
   @override
@@ -57,7 +61,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timestamp) {
-      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+      if (_scrollController.offset != _scrollController.position.maxScrollExtent) {
         _hideFabAnimation.reverse();
       } else {
         _hideFabAnimation.forward();
@@ -155,14 +159,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
                 constraints: BoxConstraints.tight(Size(40,40)),
               ),
               RawMaterialButton(
-                onPressed: () => {
-                  _delete(i)
-                },
+                onPressed: () => _openImagePicker(),
                 child: Icon(
-                  Icons.delete,
+                  Icons.image,
                   color: Colors.white,
                 ),
-                fillColor: Colors.red,
+                fillColor: Colors.grey,
                 shape: CircleBorder(),
                 constraints: BoxConstraints.tight(Size(40,40)),
               )
@@ -248,17 +250,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     final prefs = await SharedPreferences.getInstance();
     String _state = jsonEncode(this._state);
     prefs.setString('_state', _state);
-    prefs.setInt('_lastIndex', this._lastIndex);
+    prefs.setInt('_lastIndex', _lastIndex);
   }
 
   _like(int i) {
-    this.setState(() => this._state[i].count++);
+    this.setState(() => _state[i].count++);
     _saveState();
   }
 
   _dislike(int i) {
-    if (this._state[i].count > 0) {
-      this.setState(() => this._state[i].count--);
+    if (_state[i].count > 0) {
+      this.setState(() => _state[i].count--);
     } else {
       _showAlertDislike();
     }
@@ -267,15 +269,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   _delete(int i) {
     this.setState(() {
-      this._state.removeAt(i);
+      _state.removeAt(i);
     });
     _saveState();
   }
 
   _addNewEntry() {
     this.setState(() {
-      this._state = this._state..add(new Note(this._lastIndex + 1, 0));
-      this._lastIndex++;
+      _state = _state..add(new Note(_lastIndex + 1, 0));
+      _lastIndex++;
       _saveState();
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -287,8 +289,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     });
   }
 
-  _openImagePicker() {
-
+  Future _openImagePicker() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+      _showPickedImage();
+    }
   }
 
 //  _reset() => this.setState(() => this._lastIndex = 0);
@@ -301,6 +309,26 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
         return CupertinoAlertDialog(
           title: Text('Like is already at 0'),
           content: Image.asset('assets/images/pony.gif'),
+        );
+      }
+    );
+  }
+
+  Future _showPickedImage() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('Selected image'),
+          content: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            child: Image(
+              image: FileImage(
+                  _image,
+              ),
+            ),
+          )
         );
       }
     );

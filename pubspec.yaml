@@ -28,6 +28,7 @@ dependencies:
   scroll_to_index: any
   shared_preferences:
   gson: ^0.1.4
+  image_picker:
 
 dev_dependencies:
   flutter_test:
