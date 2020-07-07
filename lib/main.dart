@@ -50,6 +50,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
       parent: _hideFabAnimation,
       curve: Curves.easeInSine,
     ));
+    _hideFabAnimation.reverse();
   }
 
   @override
@@ -60,13 +61,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timestamp) {
-      if (_scrollController.offset != _scrollController.position.maxScrollExtent) {
-        _hideFabAnimation.reverse();
-      } else {
-        _hideFabAnimation.forward();
-      }
-    });
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
       child: Scaffold(
@@ -286,6 +280,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
         duration: Duration(milliseconds: 200),
         curve: Curves.linear
       );
+      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+        _hideFabAnimation.reverse();
+      } else {
+        _hideFabAnimation.forward();
+      }
     });
   }
 
