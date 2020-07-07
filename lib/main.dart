@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gson/gson.dart';
 import 'models/Note.dart';
@@ -21,33 +22,66 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   List<Note> _state = [];
   int _lastIndex = 0;
   final dataKey = new GlobalKey();
   final _scrollController = ScrollController();
+  AnimationController _hideFabAnimation;
+  Animation<Offset> _offsetAnimation;
 
   @override
   void initState() {
     super.initState();
     _loadState();
+    _hideFabAnimation = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000)
+    );
+    _offsetAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(0.0, 2.0),
+    ).animate(CurvedAnimation(
+      parent: _hideFabAnimation,
+      curve: Curves.easeInSine,
+    ));
+    _hideFabAnimation.reverse();
+  }
+
+  @override
+  void dispose() {
+    _hideFabAnimation.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Like - Dislike', textAlign: TextAlign.right,),
-        backgroundColor: Colors.deepPurple,
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(top:0),
-        child: ListView(
-          children: _listBuilder(),
-          controller: _scrollController,
+    WidgetsBinding.instance.addPostFrameCallback((timestamp) {
+      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+        _hideFabAnimation.reverse();
+      } else {
+        _hideFabAnimation.forward();
+      }
+    });
+    return NotificationListener<ScrollNotification>(
+      onNotification: _handleScrollNotification,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Like - Dislike', textAlign: TextAlign.right,),
+          backgroundColor: Colors.deepPurple,
         ),
-      ),
-      floatingActionButton: _floatingButton(),
+        body: Padding(
+          padding: EdgeInsets.only(top:0),
+          child: ListView(
+            children: _listBuilder(),
+            controller: _scrollController,
+          ),
+        ),
+        floatingActionButton: SlideTransition(
+          child: _floatingButton(),
+          position: _offsetAnimation,
+        ),
+      )
     );
   }
 
@@ -253,6 +287,10 @@ class _HomeState extends State<Home> {
     });
   }
 
+  _openImagePicker() {
+
+  }
+
 //  _reset() => this.setState(() => this._lastIndex = 0);
 
   Future _showAlertDislike() async {
@@ -266,6 +304,28 @@ class _HomeState extends State<Home> {
         );
       }
     );
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+          case ScrollDirection.reverse:
+              _hideFabAnimation.forward();
+            break;
+          case ScrollDirection.idle:
+            if (_scrollController.offset != _scrollController.position.maxScrollExtent) {
+              _hideFabAnimation.reverse();
+            } else {
+              _hideFabAnimation.forward();
+            }
+            break;
+        }
+      }
+    }
+    return false;
   }
 }
 
