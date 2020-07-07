@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
   List<Note> _state = [];
   int _lastIndex = 0;
   final dataKey = new GlobalKey();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -43,6 +44,7 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.only(top:0),
         child: ListView(
           children: _listBuilder(),
+          controller: _scrollController,
         ),
       ),
       floatingActionButton: _floatingButton(),
@@ -67,6 +69,22 @@ class _HomeState extends State<Home> {
       return _listTileBuilder(entry.key);
     }).toList();
     return _list;
+  }
+
+  Widget _listBuilderv2() {
+    return ListView.separated(
+      itemCount: this._state.length,
+      itemBuilder: (context, index) {
+        return _listTileBuilderv2(index);
+      },
+      separatorBuilder: (context, index) {
+        return Divider(
+          thickness: 1,
+          indent: 20,
+          endIndent: 20,
+        );
+      },
+    );
   }
 
   Widget _listTileBuilder(int i) {
@@ -118,7 +136,61 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      key: ValueKey(this._state[i].index),
+      key: new GlobalKey(),
+      onDismissed: (d) => {
+        _delete(i)
+      },
+    );
+  }
+
+  Widget _listTileBuilderv2(int i) {
+    return Dismissible(
+      child: ListTile(
+        leading: RawMaterialButton(
+          onPressed: () => {
+            _like(i)
+          },
+          child: Icon(
+            Icons.thumb_up,
+            color: Colors.white,
+          ),
+          fillColor: Colors.deepPurple,
+          shape: CircleBorder(),
+          constraints: BoxConstraints.tight(Size(40, 40)),
+        ),
+        title: Text('This is line number ${this._state[i].index}'),
+        subtitle: Text('Liked ${this._state[i].count} times'),
+        trailing: Wrap(
+          spacing: 10,
+          children: <Widget>[
+            RawMaterialButton(
+              onPressed: () => {
+                _dislike(i)
+              },
+              child: Icon(
+                Icons.thumb_down,
+                color: Colors.white,
+              ),
+              fillColor: Colors.redAccent,
+              shape: CircleBorder(),
+              constraints: BoxConstraints.tight(Size(40,40)),
+            ),
+            RawMaterialButton(
+              onPressed: () => {
+                _delete(i)
+              },
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+              fillColor: Colors.red,
+              shape: CircleBorder(),
+              constraints: BoxConstraints.tight(Size(40,40)),
+            )
+          ],
+        ),
+      ),
+      key: new GlobalKey(),
       onDismissed: (d) => {
         _delete(i)
       },
@@ -171,6 +243,13 @@ class _HomeState extends State<Home> {
       this._state = this._state..add(new Note(this._lastIndex + 1, 0));
       this._lastIndex++;
       _saveState();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.linear
+      );
     });
   }
 
