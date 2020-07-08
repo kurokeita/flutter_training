@@ -1,0 +1,74 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../screens/Home.dart';
+import '../screens/Second.dart';
+import '../configs/Consts.dart' as Consts;
+
+class BottomBar extends StatefulWidget {
+  final int currentIndex;
+
+  BottomBar({Key key, @required this.currentIndex});
+
+  @override
+  _BottomBarState createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    this.setState(() => _currentIndex = widget.currentIndex);
+  }
+
+  void _changeScreen(int index) {
+    if (_currentIndex != index) {
+      this.setState(() => _currentIndex = index);
+      switch (index) {
+        case Consts.HOME:
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_,__,___) => Home(),
+              transitionDuration: Duration(milliseconds: 0)
+            )
+          );
+          break;
+        case Consts.SECOND:
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+                pageBuilder: (_,__,___) => Second(),
+                transitionDuration: Duration(milliseconds: 0)
+            )
+          );
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text('Home'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.call_to_action),
+          title: Text('Actions'),
+        ),
+      ],
+      selectedItemColor: Colors.deepPurple,
+      currentIndex: _currentIndex,
+      onTap: _changeScreen,
+    );
+  }
+}

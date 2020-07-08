@@ -29,13 +29,14 @@ dependencies:
   shared_preferences:
   gson: ^0.1.4
   image_picker:
-  flutter_native_splash:
+  package_info:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   change_app_package_name: ^0.1.2
-  flutter_launcher_icons: "^0.7.3"
+  flutter_launcher_icons: ^0.7.3
+  flutter_native_splash:
 
 flutter_icons:
   android: "launcher_icon"
@@ -43,10 +44,10 @@ flutter_icons:
   image_path: "assets/icons/icon.jpg"
 
 flutter_native_splash:
-  image: assets/icons/baseline_note_black_48.png
-  android_disable_fullscreen: true
-  color: "fff1ff"
-  fill: false
+  image: assets/icons/baseline_sticky_note_2_white_48.png
+#  android_disable_fullscreen: true
+  color: FF673AB7
+  fill: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
