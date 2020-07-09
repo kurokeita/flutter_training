@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'screens/Home.dart';
+
+import 'router.dart';
+import 'configs/Consts.dart' as Consts;
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,12 +15,8 @@ class MyApp extends StatelessWidget {
     ));
     return MaterialApp(
       title: "Kuro's notes",
-      home: Home(),
-//      initialRoute: '/',
-//      routes: {
-//        '/': (context) => Home(),
-//        '/second': (context) => Second()
-//      },
+      onGenerateRoute: Router.generateRoute,
+      initialRoute: Consts.HOME_ROUTE,
     );
   }
 }
