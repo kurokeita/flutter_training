@@ -69,6 +69,7 @@ class _BottomBarState extends State<BottomBar> {
       selectedItemColor: Colors.deepPurple,
       currentIndex: _currentIndex,
       onTap: _changeScreen,
+      backgroundColor: Colors.white,
     );
   }
 }
