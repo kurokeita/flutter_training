@@ -1,10 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/Home.dart';
-import '../screens/Second.dart';
 import '../configs/Consts.dart' as Consts;
 
 class BottomBar extends StatefulWidget {
@@ -27,31 +23,22 @@ class _BottomBarState extends State<BottomBar> {
 
   void _changeScreen(int index) {
     if (_currentIndex != index) {
-      this.setState(() => _currentIndex = index);
       switch (index) {
         case Consts.HOME:
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (_,__,___) => Home(),
-              transitionDuration: Duration(milliseconds: 0)
-            )
-          );
+          Navigator.maybePop(context)
+            .then((_) => _updateIndex(index));
           break;
         case Consts.SECOND:
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (_,__,___) => Second(),
-                transitionDuration: Duration(milliseconds: 0)
-            )
-          );
+          Navigator.pushNamed(context, Consts.SECOND_ROUTE)
+            .then((_) => _updateIndex(index));
           break;
         default:
           break;
       }
     }
   }
+
+  _updateIndex(int index) => () => this.setState(() => _currentIndex = index);
 
   @override
   Widget build(BuildContext context) {
