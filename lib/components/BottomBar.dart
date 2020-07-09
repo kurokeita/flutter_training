@@ -5,8 +5,9 @@ import '../configs/Consts.dart' as Consts;
 
 class BottomBar extends StatefulWidget {
   final int currentIndex;
+  final Function refresh;
 
-  BottomBar({Key key, @required this.currentIndex});
+  BottomBar({Key key, @required this.currentIndex, this.refresh});
 
   @override
   _BottomBarState createState() => _BottomBarState();
@@ -29,7 +30,13 @@ class _BottomBarState extends State<BottomBar> {
             .then((_) => _updateIndex(index));
           break;
         case Consts.SECOND:
-          Navigator.pushNamed(context, Consts.SECOND_ROUTE)
+          Navigator.pushNamed(
+            context,
+            Consts.SECOND_ROUTE,
+            arguments: {
+              'refresh': widget.refresh
+            }
+          )
             .then((_) => _updateIndex(index));
           break;
         default:

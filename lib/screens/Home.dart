@@ -72,7 +72,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             position: _offsetAnimation,
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-          bottomNavigationBar: BottomBar(currentIndex: Consts.HOME),
+          bottomNavigationBar: BottomBar(currentIndex: Consts.HOME, refresh: _refresh),
         )
     );
   }
@@ -220,6 +220,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
       },
     );
   }
+
+  _refresh() => _loadState();
 
   _loadState() async {
     final prefs = await SharedPreferences.getInstance();
