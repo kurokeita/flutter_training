@@ -11,19 +11,35 @@ class Third extends StatefulWidget {
   _ThirdState createState() => _ThirdState();
 }
 
-class _ThirdState extends State<Third> with SingleTickerProviderStateMixin<Third> {
+class _ThirdState extends State<Third> with TickerProviderStateMixin<Third> {
   bool _playing = false;
   Color _begin = Colors.white;
-  Color _end = Colors.deepOrangeAccent;
+  Color _end = Colors.orangeAccent;
+  Color _currentColor = Colors.white;
   AnimationController _rotationController;
+  AnimationController _colorController;
+  Animation<Color> _colorTween;
 
   @override
   void initState() {
     super.initState();
     _rotationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5)
+      duration: Duration(seconds: 20)
     );
+    _colorController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3)
+    );
+    _colorTween = ColorTween(
+      begin: _begin,
+      end: _end
+    ).animate(_colorController)
+    ..addListener(() {
+      setState(() {
+        _currentColor = _colorTween.value;
+      });
+    });
   }
 
   @override
@@ -55,18 +71,6 @@ class _ThirdState extends State<Third> with SingleTickerProviderStateMixin<Third
       child: AnimatedBuilder(
         animation: _rotationController,
         child: _colorFiltered(),
-//        child: TweenAnimationBuilder(
-//            tween: ColorTween(
-//                begin: _begin,
-//                end: _end
-//            ),
-//            duration: Duration(seconds: 5),
-//            builder: (_, Color color, ___) => ColorFiltered(
-//              child: Image.asset('assets/images/sun.jpg'),
-//              colorFilter: ColorFilter.mode(color, BlendMode.modulate),
-//            ),
-//            onEnd: _swapColor
-//        ),
         builder: (context, child) {
           return Transform.rotate(
             angle: _rotationController.value * 2 * pi,
@@ -78,44 +82,18 @@ class _ThirdState extends State<Third> with SingleTickerProviderStateMixin<Third
   }
 
   Widget _colorFiltered() {
-    return AnimatedBuilder(
-      animation: _rotationController,
+    return ColorFiltered(
       child: Image.asset('assets/images/sun.jpg'),
-      builder: (context, child) {
-        return TweenAnimationBuilder(
-            tween: ColorTween(
-                begin: _begin,
-                end: _end
-            ),
-            duration: Duration(seconds: 3),
-            builder: (_, Color color, ___) => ColorFiltered(
-              child: child,
-              colorFilter: ColorFilter.mode(color, BlendMode.modulate),
-            ),
-            onEnd: _swapColor
-        );
-      },
+      colorFilter: ColorFilter.mode(_currentColor, BlendMode.modulate),
     );
   }
 
   void _play() {
-    Color _middle = _begin;
     this.setState(() {
-      _begin = _end;
-      _end = _middle;
       _playing = true;
     });
     _rotationController.repeat();
-  }
-
-  void _swapColor() {
-    if (_playing) {
-      Color _middle = _begin;
-      this.setState(() {
-        _begin = _end;
-        _end = _middle;
-      });
-    }
+    _colorController.repeat(reverse: true);
   }
 
   void _pause() {

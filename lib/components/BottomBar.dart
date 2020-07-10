@@ -71,10 +71,10 @@ class _BottomBarState extends State<BottomBar> {
           icon: Icon(Icons.insert_chart),
           title: Text('Animated Widget')
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.widgets),
-          title: Text('Slider')
-        )
+//        BottomNavigationBarItem(
+//          icon: Icon(Icons.widgets),
+//          title: Text('Slider')
+//        )
       ],
       selectedItemColor: Colors.deepPurple,
       currentIndex: _currentIndex,
