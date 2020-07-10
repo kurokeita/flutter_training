@@ -20,6 +20,11 @@ class Router {
           pageBuilder: (_, __, ___) => Third(),
           transitionDuration: Duration(milliseconds: 0)
         );
+      case Consts.SLIDER_ROUTE:
+        return PageRouteBuilder(
+          pageBuilder: (_, __, ___) => Third(),
+          transitionDuration: Duration(milliseconds: 0)
+        );
       case Consts.HOME_ROUTE:
       default:
         return PageRouteBuilder(

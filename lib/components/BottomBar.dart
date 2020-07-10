@@ -43,6 +43,12 @@ class _BottomBarState extends State<BottomBar> {
             Consts.ANIMATION_ROUTE
           );
           break;
+        case Consts.SLIDER:
+          Navigator.pushNamed(
+            context,
+            Consts.SLIDER_ROUTE
+          );
+          break;
         default:
           break;
       }
@@ -64,12 +70,17 @@ class _BottomBarState extends State<BottomBar> {
         BottomNavigationBarItem(
           icon: Icon(Icons.insert_chart),
           title: Text('Animated Widget')
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.widgets),
+          title: Text('Slider')
         )
       ],
       selectedItemColor: Colors.deepPurple,
       currentIndex: _currentIndex,
       onTap: _changeScreen,
       backgroundColor: Colors.white,
+      unselectedItemColor: Color(0xFF000000).withOpacity(0.6),
     );
   }
 }
