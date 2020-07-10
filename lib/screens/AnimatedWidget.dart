@@ -54,7 +54,7 @@ class _ThirdState extends State<Third> with SingleTickerProviderStateMixin<Third
                 begin: _begin,
                 end: _end
             ),
-            duration: Duration(seconds: 3),
+            duration: Duration(seconds: 5),
             builder: (_, Color color, ___) => ColorFiltered(
               child: Image.asset('assets/images/sun.jpg'),
               colorFilter: ColorFilter.mode(color, BlendMode.modulate),
