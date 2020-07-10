@@ -26,8 +26,7 @@ class _BottomBarState extends State<BottomBar> {
     if (_currentIndex != index) {
       switch (index) {
         case Consts.HOME:
-          Navigator.maybePop(context)
-            .then((_) => _updateIndex(index));
+          Navigator.popUntil(context, (route) => route.isFirst);
           break;
         case Consts.SECOND:
           Navigator.pushNamed(
@@ -36,16 +35,19 @@ class _BottomBarState extends State<BottomBar> {
             arguments: {
               'refresh': widget.refresh
             }
-          )
-            .then((_) => _updateIndex(index));
+          );
+          break;
+        case Consts.ANIMATION:
+          Navigator.pushNamed(
+            context,
+            Consts.ANIMATION_ROUTE
+          );
           break;
         default:
           break;
       }
     }
   }
-
-  _updateIndex(int index) => () => this.setState(() => _currentIndex = index);
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,10 @@ class _BottomBarState extends State<BottomBar> {
           icon: Icon(Icons.call_to_action),
           title: Text('Actions'),
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.insert_chart),
+          title: Text('Animated Widget')
+        )
       ],
       selectedItemColor: Colors.deepPurple,
       currentIndex: _currentIndex,

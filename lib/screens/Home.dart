@@ -36,7 +36,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     );
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: const Offset(0.0, 2.0),
+      end: const Offset(0.0, 3.0),
     ).animate(CurvedAnimation(
       parent: _hideFabAnimation,
       curve: Curves.easeInSine,
@@ -71,7 +71,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             child: _floatingButton(),
             position: _offsetAnimation,
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+//          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           bottomNavigationBar: BottomBar(currentIndex: Consts.HOME, refresh: _refresh),
         )
     );

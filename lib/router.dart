@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'screens/Home.dart';
 import 'screens/Actions.dart';
+import 'screens/AnimatedWidget.dart';
 import 'configs/Consts.dart' as Consts;
 
 class Router {
@@ -12,6 +13,11 @@ class Router {
       case Consts.SECOND_ROUTE:
         return PageRouteBuilder(
           pageBuilder: (_, __, ___) => Second(refresh: args['refresh'],),
+          transitionDuration: Duration(milliseconds: 0)
+        );
+      case Consts.ANIMATION_ROUTE:
+        return PageRouteBuilder(
+          pageBuilder: (_, __, ___) => Third(),
           transitionDuration: Duration(milliseconds: 0)
         );
       case Consts.HOME_ROUTE:

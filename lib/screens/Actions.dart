@@ -21,7 +21,7 @@ class _SecondState extends State<Second> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Actions', textAlign: TextAlign.right,),
+        title: Text('Actions', textAlign: TextAlign.right,),
         backgroundColor: Colors.deepPurple,
       ),
       body: Center(
