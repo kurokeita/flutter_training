@@ -19,12 +19,17 @@ class _ThirdState extends State<Third> with SingleTickerProviderStateMixin<Third
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _rotationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 5)
     );
+  }
+
+  @override
+  void dispose() {
+    _rotationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -49,25 +54,47 @@ class _ThirdState extends State<Third> with SingleTickerProviderStateMixin<Third
     return Center(
       child: AnimatedBuilder(
         animation: _rotationController,
-        child: TweenAnimationBuilder(
-            tween: ColorTween(
-                begin: _begin,
-                end: _end
-            ),
-            duration: Duration(seconds: 5),
-            builder: (_, Color color, ___) => ColorFiltered(
-              child: Image.asset('assets/images/sun.jpg'),
-              colorFilter: ColorFilter.mode(color, BlendMode.modulate),
-            ),
-            onEnd: _swapColor
-        ),
-        builder: (_, child) {
+        child: _colorFiltered(),
+//        child: TweenAnimationBuilder(
+//            tween: ColorTween(
+//                begin: _begin,
+//                end: _end
+//            ),
+//            duration: Duration(seconds: 5),
+//            builder: (_, Color color, ___) => ColorFiltered(
+//              child: Image.asset('assets/images/sun.jpg'),
+//              colorFilter: ColorFilter.mode(color, BlendMode.modulate),
+//            ),
+//            onEnd: _swapColor
+//        ),
+        builder: (context, child) {
           return Transform.rotate(
             angle: _rotationController.value * 2 * pi,
             child: child,
           );
         },
       ),
+    );
+  }
+
+  Widget _colorFiltered() {
+    return AnimatedBuilder(
+      animation: _rotationController,
+      child: Image.asset('assets/images/sun.jpg'),
+      builder: (context, child) {
+        return TweenAnimationBuilder(
+            tween: ColorTween(
+                begin: _begin,
+                end: _end
+            ),
+            duration: Duration(seconds: 3),
+            builder: (_, Color color, ___) => ColorFiltered(
+              child: child,
+              colorFilter: ColorFilter.mode(color, BlendMode.modulate),
+            ),
+            onEnd: _swapColor
+        );
+      },
     );
   }
 
