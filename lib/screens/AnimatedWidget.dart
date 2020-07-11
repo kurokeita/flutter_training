@@ -101,6 +101,7 @@ class _ThirdState extends State<Third> with TickerProviderStateMixin<Third> {
       _playing = false;
     });
     _rotationController.stop();
+    _colorController.stop();
   }
 }
 
