@@ -43,10 +43,10 @@ class _BottomBarState extends State<BottomBar> {
             Consts.ANIMATION_ROUTE
           );
           break;
-        case Consts.SLIDER:
+        case Consts.HERO:
           Navigator.pushNamed(
             context,
-            Consts.SLIDER_ROUTE
+            Consts.HERO_ROUTE
           );
           break;
         default:
@@ -71,10 +71,10 @@ class _BottomBarState extends State<BottomBar> {
           icon: Icon(Icons.insert_chart),
           title: Text('Animated Widget')
         ),
-//        BottomNavigationBarItem(
-//          icon: Icon(Icons.widgets),
-//          title: Text('Slider')
-//        )
+        BottomNavigationBarItem(
+          icon: Icon(Icons.widgets),
+          title: Text('Hero')
+        )
       ],
       selectedItemColor: Colors.deepPurple,
       currentIndex: _currentIndex,

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../models/Note.dart';
+import 'package:test/models/NoteProvider.dart';
 import '../components/BottomBar.dart';
 import '../configs/Consts.dart' as Consts;
 
@@ -52,6 +54,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<NoteProvider>(context, listen: false).load();
     return NotificationListener<ScrollNotification>(
         onNotification: _handleScrollNotification,
         child: Scaffold(
@@ -62,10 +65,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
           ),
           body: Padding(
             padding: EdgeInsets.only(top:0),
-            child: ListView(
-              children: _listBuilder(),
-              controller: _scrollController,
-            ),
+//            child: ListView(
+//              children: _listBuilder(),
+//              controller: _scrollController,
+//            ),
+            child: _listBuilderv2(),
           ),
           floatingActionButton: SlideTransition(
             child: _floatingButton(),
@@ -98,16 +102,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   }
 
   Widget _listBuilderv2() {
-    return ListView.separated(
-      itemCount: this._state.length,
-      itemBuilder: (context, index) {
-        return _listTileBuilderv2(index);
-      },
-      separatorBuilder: (context, index) {
-        return Divider(
-          thickness: 1,
-          indent: 20,
-          endIndent: 20,
+    return Consumer<NoteProvider>(
+      builder: (context, notes, child) {
+        List<Note> _notes = notes.notes;
+          List<Widget> _list = _notes
+              .asMap()
+              .entries
+              .map((MapEntry entry) {
+            return _listTileBuilder(entry.key);
+          }).toList();
+        return ListView(
+          children: _list,
+          controller: _scrollController,
         );
       },
     );
@@ -119,7 +125,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
         child: ListTile(
           leading: RawMaterialButton(
             onPressed: () => {
-              _like(i)
+              Provider.of<NoteProvider>(context, listen: false).like(i)
             },
             child: Icon(
               Icons.thumb_up,
@@ -129,14 +135,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             shape: CircleBorder(),
             constraints: BoxConstraints.tight(Size(40, 40)),
           ),
-          title: Text('This is line number ${this._state[i].index}'),
-          subtitle: Text('Liked ${this._state[i].count} times'),
+          title: Text('This is line number ${Provider.of<NoteProvider>(context, listen: false).notes[i].index}'),
+          subtitle: Text('Liked ${Provider.of<NoteProvider>(context, listen: false).notes[i].count} times'),
           trailing: Wrap(
             spacing: 10,
             children: <Widget>[
               RawMaterialButton(
                 onPressed: () => {
-                  _dislike(i)
+                  Provider.of<NoteProvider>(context, listen: false).dislike(i)
                 },
                 child: Icon(
                   Icons.thumb_down,
@@ -162,7 +168,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
       ),
       key: new GlobalKey(),
       onDismissed: (d) => {
-        _delete(i)
+        Provider.of<NoteProvider>(context, listen: false).delete(i)
       },
     );
   }
@@ -266,7 +272,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   _addNewEntry() {
     this.setState(() {
-      _state = _state..add(new Note(_lastIndex + 1, 0));
+      Provider.of<NoteProvider>(context, listen: false).notes = Provider.of<NoteProvider>(context, listen: false).notes..add(new Note(Provider.of<NoteProvider>(context, listen: false).lastIndex + 1, 0));
+      Provider.of<NoteProvider>(context, listen: false).save();
       _lastIndex++;
       _saveState();
     });

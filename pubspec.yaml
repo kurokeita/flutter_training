@@ -30,6 +30,7 @@ dependencies:
   gson: ^0.1.4
   image_picker:
   package_info:
+  provider:
 
 dev_dependencies:
   flutter_test:
