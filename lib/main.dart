@@ -12,8 +12,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.deepPurple,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.grey[800],
+      systemNavigationBarIconBrightness: Brightness.light,
     ));
 //    return MaterialApp(
 //      title: "Kuro's notes",
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         title: "Kuro's notes",
         onGenerateRoute: Router.generateRoute,
         initialRoute: Consts.HOME_ROUTE,
+        theme: ThemeData.dark(),
       ),
     );
   }

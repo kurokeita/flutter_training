@@ -26,7 +26,7 @@ class _BottomBarState extends State<BottomBar> {
     if (_currentIndex != index) {
       switch (index) {
         case Consts.HOME:
-          Navigator.popUntil(context, (route) => route.isFirst);
+          Navigator.pushNamedAndRemoveUntil(context, Consts.HOME_ROUTE, (route) => false);
           break;
         case Consts.SECOND:
           Navigator.pushNamed(
@@ -79,8 +79,8 @@ class _BottomBarState extends State<BottomBar> {
       selectedItemColor: Colors.deepPurple,
       currentIndex: _currentIndex,
       onTap: _changeScreen,
-      backgroundColor: Colors.white,
-      unselectedItemColor: Color(0xFF000000).withOpacity(0.6),
+//      unselectedItemColor: Color(0xFF000000).withOpacity(0.6),
+      unselectedItemColor: Colors.white,
     );
   }
 }
