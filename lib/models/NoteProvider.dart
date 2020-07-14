@@ -26,13 +26,13 @@ class NoteProvider with ChangeNotifier {
   }
 
   void like(int index) {
-    ++notes[index].count;
+//    ++notes[index].count;
     save();
     notifyListeners();
   }
 
   void dislike(int index) {
-    --notes[index].count;
+//    --notes[index].count;
     save();
     notifyListeners();
   }

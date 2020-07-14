@@ -31,7 +31,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   @override
   void initState() {
     super.initState();
-    _loadState();
+//    _loadState();
     _hideFabAnimation = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 1000)
@@ -84,7 +84,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   Widget _floatingButton() {
     return FloatingActionButton(
       onPressed: () => {
-        _addNewEntry()
+        null
       },
       tooltip: 'Floating button',
       child: Icon(
@@ -178,7 +178,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
       child: ListTile(
         leading: RawMaterialButton(
           onPressed: () => {
-            _like(i)
+            null
           },
           child: Icon(
             Icons.thumb_up,
@@ -195,7 +195,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
           children: <Widget>[
             RawMaterialButton(
               onPressed: () => {
-                _dislike(i)
+                null
               },
               child: Icon(
                 Icons.thumb_down,
@@ -207,7 +207,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             ),
             RawMaterialButton(
               onPressed: () => {
-                _delete(i)
+                null
               },
               child: Icon(
                 Icons.delete,
@@ -222,74 +222,74 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
       ),
       key: new GlobalKey(),
       onDismissed: (d) => {
-        _delete(i)
+        null
       },
     );
   }
 
-  _refresh() => _loadState();
+  _refresh() => null;
 
-  _loadState() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String _stateString = prefs.getString('_state');
-    final int _lastIndex = prefs.getInt('_lastIndex');
-    if (!['', null].contains(_stateString)) {
-      var _state = Note.decodeNotes(_stateString);
-      this.setState(() {
-        this._state = _state;
-        this._lastIndex = _lastIndex != null ? _lastIndex : 0;
-      });
-    }
-  }
-
-  _saveState() async {
-    final prefs = await SharedPreferences.getInstance();
-    String _state = jsonEncode(this._state);
-    prefs.setString('_state', _state);
-    prefs.setInt('_lastIndex', _lastIndex);
-  }
-
-  _like(int i) {
-    this.setState(() => _state[i].count++);
-    _saveState();
-  }
-
-  _dislike(int i) {
-    if (_state[i].count > 0) {
-      this.setState(() => _state[i].count--);
-    } else {
-      _showAlertDislike();
-    }
-    _saveState();
-  }
-
-  _delete(int i) {
-    this.setState(() {
-      _state.removeAt(i);
-    });
-    _saveState();
-  }
-
-  _addNewEntry() {
-    this.setState(() {
-      Provider.of<NoteProvider>(context, listen: false).notes = Provider.of<NoteProvider>(context, listen: false).notes..add(new Note(Provider.of<NoteProvider>(context, listen: false).lastIndex + 1, 0));
-      Provider.of<NoteProvider>(context, listen: false).save();
-      _lastIndex++;
-      _saveState();
-    });
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 200),
-          curve: Curves.linear
-      );
-      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
-        _hideFabAnimation.reverse();
-      } else {
-        _hideFabAnimation.forward();
-      }
-    });
-  }
+//  _loadState() async {
+//    final prefs = await SharedPreferences.getInstance();
+//    final String _stateString = prefs.getString('_state');
+//    final int _lastIndex = prefs.getInt('_lastIndex');
+//    if (!['', null].contains(_stateString)) {
+//      var _state = Note.decodeNotes(_stateString);
+//      this.setState(() {
+//        this._state = _state;
+//        this._lastIndex = _lastIndex != null ? _lastIndex : 0;
+//      });
+//    }
+//  }
+//
+//  _saveState() async {
+//    final prefs = await SharedPreferences.getInstance();
+//    String _state = jsonEncode(this._state);
+//    prefs.setString('_state', _state);
+//    prefs.setInt('_lastIndex', _lastIndex);
+//  }
+//
+//  _like(int i) {
+//    this.setState(() => _state[i].count++);
+//    _saveState();
+//  }
+//
+//  _dislike(int i) {
+//    if (_state[i].count > 0) {
+//      this.setState(() => _state[i].count--);
+//    } else {
+//      _showAlertDislike();
+//    }
+//    _saveState();
+//  }
+//
+//  _delete(int i) {
+//    this.setState(() {
+//      _state.removeAt(i);
+//    });
+//    _saveState();
+//  }
+//
+//  _addNewEntry() {
+//    this.setState(() {
+//      Provider.of<NoteProvider>(context, listen: false).notes = Provider.of<NoteProvider>(context, listen: false).notes..add(new Note(Provider.of<NoteProvider>(context, listen: false).lastIndex + 1, 0));
+//      Provider.of<NoteProvider>(context, listen: false).save();
+//      _lastIndex++;
+//      _saveState();
+//    });
+//    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+//      _scrollController.animateTo(
+//          _scrollController.position.maxScrollExtent,
+//          duration: Duration(milliseconds: 200),
+//          curve: Curves.linear
+//      );
+//      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+//        _hideFabAnimation.reverse();
+//      } else {
+//        _hideFabAnimation.forward();
+//      }
+//    });
+//  }
 
   Future _openImagePicker() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);

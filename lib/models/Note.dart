@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 class Note {
-  int count;
-  int index;
+  final int count;
+  final int index;
 
   Note(this.index, this.count);
 
@@ -11,7 +11,7 @@ class Note {
     'index': index
   };
 
-  Note.fromJson(Map<String, dynamic> json)
+  Note.fromJson(Map<String, int> json)
     : count = json['count'],
       index = json['index'];
 

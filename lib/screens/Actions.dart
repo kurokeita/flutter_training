@@ -30,25 +30,25 @@ class _SecondState extends State<Second> {
           child: Column(
               children: <Widget>[
                 RaisedButton(
-                  onPressed: () => _likeAll(),
+                  onPressed: () => null,
                   child: Text('Like all'),
                   color: Colors.blueAccent,
                   textColor: Colors.white,
                 ),
                 RaisedButton(
-                  onPressed: () => _dislikeAll(),
+                  onPressed: () => null,
                   child: Text('Dislike all'),
                   color: Colors.red,
                   textColor: Colors.white,
                 ),
                 RaisedButton(
-                  onPressed: () => _reset(),
+                  onPressed: () => null,
                   child: Text('Reset counter'),
                   color: Colors.blueGrey,
                   textColor: Colors.white,
                 ),
                 RaisedButton(
-                  onPressed: () => _deleteAll(),
+                  onPressed: () => null,
                   child: Text('Delete all'),
                 ),
               ],
@@ -71,46 +71,46 @@ class _SecondState extends State<Second> {
     return _notes;
   }
 
-  _reset() async {
-    List<Note> _notes = await _loadNotes();
-    if (_notes != null) {
-      _notes = _notes.map<Note>((note) => Note(note.index, 0)).toList();
-      _saveToSharedPreferences(_notes);
-    }
-    widget.refresh();
-  }
-
-  _deleteAll() async {
-    final List<Note> _new = [];
-    _saveToSharedPreferences(_new);
-    widget.refresh();
-  }
-
-  _likeAll() async {
-    List<Note> _notes = await _loadNotes();
-    if (_notes != null) {
-      _notes = _notes.map<Note>((note) => Note(note.index, ++note.count)).toList();
-      _saveToSharedPreferences(_notes);
-    }
-    widget.refresh();
-  }
-
-  _dislikeAll() async {
-    List<Note> _notes = await _loadNotes();
-    if (_notes != null) {
-      _notes = _notes.map<Note>((note) {
-        return Note(
-          note.index,
-          note.count > 0 ? --note.count : 0
-        );
-      }).toList();
-      _saveToSharedPreferences(_notes);
-    }
-    widget.refresh();
-  }
-
-  _saveToSharedPreferences(List<Note> notes) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('_state', jsonEncode(notes));
-  }
+//  _reset() async {
+//    List<Note> _notes = await _loadNotes();
+//    if (_notes != null) {
+//      _notes = _notes.map<Note>((note) => Note(note.index, 0)).toList();
+//      _saveToSharedPreferences(_notes);
+//    }
+//    widget.refresh();
+//  }
+//
+//  _deleteAll() async {
+//    final List<Note> _new = [];
+//    _saveToSharedPreferences(_new);
+//    widget.refresh();
+//  }
+//
+//  _likeAll() async {
+//    List<Note> _notes = await _loadNotes();
+//    if (_notes != null) {
+//      _notes = _notes.map<Note>((note) => Note(note.index, ++note.count)).toList();
+//      _saveToSharedPreferences(_notes);
+//    }
+//    widget.refresh();
+//  }
+//
+//  _dislikeAll() async {
+//    List<Note> _notes = await _loadNotes();
+//    if (_notes != null) {
+//      _notes = _notes.map<Note>((note) {
+//        return Note(
+//          note.index,
+//          note.count > 0 ? --note.count : 0
+//        );
+//      }).toList();
+//      _saveToSharedPreferences(_notes);
+//    }
+//    widget.refresh();
+//  }
+//
+//  _saveToSharedPreferences(List<Note> notes) async {
+//    final prefs = await SharedPreferences.getInstance();
+//    prefs.setString('_state', jsonEncode(notes));
+//  }
 }
