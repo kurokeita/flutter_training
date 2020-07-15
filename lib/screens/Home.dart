@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:test/models/AppState.dart';
+import 'package:test/redux/actions.dart';
 
 import '../models/Note.dart';
-import 'package:test/models/NoteProvider.dart';
+//import 'package:test/models/NoteProvider.dart';
 import '../components/BottomBar.dart';
 import '../configs/Consts.dart' as Consts;
 
@@ -54,7 +57,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<NoteProvider>(context, listen: false).load();
     return NotificationListener<ScrollNotification>(
         onNotification: _handleScrollNotification,
         child: Scaffold(
@@ -65,17 +67,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
           ),
           body: Padding(
             padding: EdgeInsets.only(top:0),
-//            child: ListView(
-//              children: _listBuilder(),
-//              controller: _scrollController,
-//            ),
             child: _listBuilderv2(),
+//            child: Container(),
           ),
           floatingActionButton: SlideTransition(
             child: _floatingButton(),
             position: _offsetAnimation,
           ),
-//          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           bottomNavigationBar: BottomBar(currentIndex: Consts.HOME, refresh: _refresh),
         )
     );
@@ -83,9 +81,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   Widget _floatingButton() {
     return FloatingActionButton(
-      onPressed: () => {
-        null
-      },
+      onPressed: () => _addNewEntry(),
       tooltip: 'Floating button',
       child: Icon(
           Icons.add
@@ -94,23 +90,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     );
   }
 
-  List<Widget>_listBuilder() {
-    List<Widget> _list = this._state.asMap().entries.map((MapEntry entry) {
-      return _listTileBuilder(entry.key);
-    }).toList();
-    return _list;
-  }
-
   Widget _listBuilderv2() {
-    return Consumer<NoteProvider>(
-      builder: (context, notes, child) {
-        List<Note> _notes = notes.notes;
-          List<Widget> _list = _notes
-              .asMap()
-              .entries
-              .map((MapEntry entry) {
-            return _listTileBuilder(entry.key);
-          }).toList();
+    return StoreConnector<AppState, List<Note>>(
+      converter: (store) => store.state.notes,
+      builder: (context, notes) {
+        List<Widget> _list = notes.map(
+            (note) => _listTileBuilder(note)
+        ).toList();
         return ListView(
           children: _list,
           controller: _scrollController,
@@ -119,14 +105,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     );
   }
 
-  Widget _listTileBuilder(int i) {
+  Widget _listTileBuilder(Note note) {
     return Dismissible(
       child: Card(
         child: ListTile(
           leading: RawMaterialButton(
-            onPressed: () => {
-              Provider.of<NoteProvider>(context, listen: false).like(i)
-            },
+            onPressed: () => _like(note.index),
             child: Icon(
               Icons.thumb_up,
               color: Colors.white,
@@ -135,15 +119,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             shape: CircleBorder(),
             constraints: BoxConstraints.tight(Size(40, 40)),
           ),
-          title: Text('This is line number ${Provider.of<NoteProvider>(context, listen: false).notes[i].index}'),
-          subtitle: Text('Liked ${Provider.of<NoteProvider>(context, listen: false).notes[i].count} times'),
+          title: Text('This is line number ${note.index}'),
+          subtitle: Text('Liked ${note.count} times'),
           trailing: Wrap(
             spacing: 10,
             children: <Widget>[
               RawMaterialButton(
-                onPressed: () => {
-                  Provider.of<NoteProvider>(context, listen: false).dislike(i)
-                },
+                onPressed: () => _dislike(note.index),
                 child: Icon(
                   Icons.thumb_down,
                   color: Colors.white,
@@ -167,9 +149,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
         ),
       ),
       key: new GlobalKey(),
-      onDismissed: (d) => {
-        Provider.of<NoteProvider>(context, listen: false).delete(i)
-      },
+      onDismissed: (d) => _delete(note.index),
     );
   }
 
@@ -229,67 +209,36 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   _refresh() => null;
 
-//  _loadState() async {
-//    final prefs = await SharedPreferences.getInstance();
-//    final String _stateString = prefs.getString('_state');
-//    final int _lastIndex = prefs.getInt('_lastIndex');
-//    if (!['', null].contains(_stateString)) {
-//      var _state = Note.decodeNotes(_stateString);
-//      this.setState(() {
-//        this._state = _state;
-//        this._lastIndex = _lastIndex != null ? _lastIndex : 0;
-//      });
-//    }
-//  }
-//
-//  _saveState() async {
-//    final prefs = await SharedPreferences.getInstance();
-//    String _state = jsonEncode(this._state);
-//    prefs.setString('_state', _state);
-//    prefs.setInt('_lastIndex', _lastIndex);
-//  }
-//
-//  _like(int i) {
-//    this.setState(() => _state[i].count++);
-//    _saveState();
-//  }
-//
-//  _dislike(int i) {
-//    if (_state[i].count > 0) {
-//      this.setState(() => _state[i].count--);
-//    } else {
-//      _showAlertDislike();
-//    }
-//    _saveState();
-//  }
-//
-//  _delete(int i) {
-//    this.setState(() {
-//      _state.removeAt(i);
-//    });
-//    _saveState();
-//  }
-//
-//  _addNewEntry() {
-//    this.setState(() {
-//      Provider.of<NoteProvider>(context, listen: false).notes = Provider.of<NoteProvider>(context, listen: false).notes..add(new Note(Provider.of<NoteProvider>(context, listen: false).lastIndex + 1, 0));
-//      Provider.of<NoteProvider>(context, listen: false).save();
-//      _lastIndex++;
-//      _saveState();
-//    });
-//    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-//      _scrollController.animateTo(
-//          _scrollController.position.maxScrollExtent,
-//          duration: Duration(milliseconds: 200),
-//          curve: Curves.linear
-//      );
-//      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
-//        _hideFabAnimation.reverse();
-//      } else {
-//        _hideFabAnimation.forward();
-//      }
-//    });
-//  }
+  _addNewEntry() {
+    final store = StoreProvider.of<AppState>(context);
+    final int lastIndex = store.state.lastIndex;
+    store.dispatch(AddNoteAction(Note(lastIndex + 1, 0)));
+    store.dispatch(UpdateLastIndexAction());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.linear
+      );
+      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+        _hideFabAnimation.reverse();
+      } else {
+        _hideFabAnimation.forward();
+      }
+    });
+  }
+
+  _like(int index) {
+    StoreProvider.of<AppState>(context).dispatch(LikeNoteAction(index));
+  }
+
+  _dislike(int index) {
+    StoreProvider.of<AppState>(context).dispatch(DislikeNoteAction(index));
+  }
+
+  _delete(int index) {
+    StoreProvider.of<AppState>(context).dispatch(DeleteNoteAction(index));
+  }
 
   Future _openImagePicker() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -300,8 +249,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
       _showPickedImage();
     }
   }
-
-//  _reset() => this.setState(() => this._lastIndex = 0);
 
   Future _showAlertDislike() async {
     return showDialog<void>(

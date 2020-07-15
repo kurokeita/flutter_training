@@ -1,5 +1,9 @@
 import 'package:test/models/Note.dart';
 
+class LoadStateAction {
+  LoadStateAction();
+}
+
 class AddNoteAction {
   final Note note;
   AddNoteAction(this.note);
@@ -21,6 +25,10 @@ class DeleteNoteAction {
 }
 
 class UpdateLastIndexAction {
-  final int lastIndex;
-  UpdateLastIndexAction(this.lastIndex);
+  UpdateLastIndexAction();
+}
+
+class UpdateCurrentIndexAction {
+  final int currentIndex;
+  UpdateCurrentIndexAction(this.currentIndex);
 }
