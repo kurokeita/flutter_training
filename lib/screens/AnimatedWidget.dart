@@ -57,7 +57,7 @@ class _ThirdState extends State<Third> with TickerProviderStateMixin<Third> {
         backgroundColor: Colors.deepPurple,
       ),
       body: _body(),
-      bottomNavigationBar: BottomBar(currentIndex: Consts.ANIMATION),
+      bottomNavigationBar: BottomBar(),
       floatingActionButton: FloatingActionButton(
         child: _playing ? Icon(Icons.pause) : Icon(Icons.play_arrow),
         backgroundColor: Colors.deepPurple,

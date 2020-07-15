@@ -36,7 +36,7 @@ class _HeroWidgetState extends State<HeroWidget> {
           transitionOnUserGestures: true,
         ),
       ),
-      bottomNavigationBar: BottomBar(currentIndex: Consts.HERO),
+      bottomNavigationBar: BottomBar(),
     );
   }
 }
@@ -73,7 +73,7 @@ class _TestState extends State<Test> {
           ),
         )
       ),
-      bottomNavigationBar: BottomBar(currentIndex: Consts.HERO),
+      bottomNavigationBar: BottomBar(),
 //      backgroundColor: Colors.black,
     );
   }

@@ -13,7 +13,7 @@ class Router {
     switch (settings.name) {
       case Consts.SECOND_ROUTE:
         return PageRouteBuilder(
-          pageBuilder: (_, __, ___) => Second(refresh: args['refresh'],),
+          pageBuilder: (_, __, ___) => Second(),
           transitionDuration: Duration(milliseconds: 0)
         );
       case Consts.ANIMATION_ROUTE:

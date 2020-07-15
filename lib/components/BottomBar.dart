@@ -8,11 +8,6 @@ import '../configs/Consts.dart' as Consts;
 import 'package:test/models/AppState.dart';
 
 class BottomBar extends StatefulWidget {
-  final int currentIndex;
-  final Function refresh;
-
-  BottomBar({Key key, @required this.currentIndex, this.refresh});
-
   @override
   _BottomBarState createState() => _BottomBarState();
 }
@@ -20,15 +15,14 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int _currentIndex;
 
-  @override
-  void initState() {
-    super.initState();
-    this.setState(() => _currentIndex = widget.currentIndex);
-  }
+//  @override
+//  void initState() {
+//    super.initState();
+//  }
 
   void _changeScreen(int index) {
     final store = StoreProvider.of<AppState>(context);
-    store.dispatch(UpdateCurrentIndexAction);
+    store.dispatch(UpdateCurrentIndexAction(index));
     if (_currentIndex != index) {
       switch (index) {
         case Consts.HOME:
@@ -37,10 +31,7 @@ class _BottomBarState extends State<BottomBar> {
         case Consts.SECOND:
           Navigator.pushNamed(
             context,
-            Consts.SECOND_ROUTE,
-            arguments: {
-              'refresh': widget.refresh
-            }
+            Consts.SECOND_ROUTE
           );
           break;
         case Consts.ANIMATION:

@@ -9,9 +9,9 @@ import '../configs/Consts.dart' as Consts;
 import '../models/Note.dart';
 
 class Second extends StatefulWidget {
-  final Function refresh;
-
-  Second({@required this.refresh});
+//  final Function refresh;
+//
+//  Second({@required this.refresh});
 
   @override
   _SecondState createState() => _SecondState();
@@ -57,7 +57,7 @@ class _SecondState extends State<Second> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomBar(currentIndex: Consts.SECOND),
+      bottomNavigationBar: BottomBar(),
     );
   }
 

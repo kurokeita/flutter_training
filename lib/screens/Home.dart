@@ -74,7 +74,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             child: _floatingButton(),
             position: _offsetAnimation,
           ),
-          bottomNavigationBar: BottomBar(currentIndex: Consts.HOME, refresh: _refresh),
+          bottomNavigationBar: BottomBar(),
         )
     );
   }
