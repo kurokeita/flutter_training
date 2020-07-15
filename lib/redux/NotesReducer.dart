@@ -16,7 +16,7 @@ List<Note> likeNoteReducer(List<Note> notes, LikeNoteAction action) {
 
 List<Note> dislikeNoteReducer(List<Note> notes, DislikeNoteAction action) {
   final int index = action.index;
-  notes = notes.map((note) => note.index == index ? Note(index, note.count - 1) : note)
+  notes = notes.map((note) => note.index == index ? Note(index, note.count > 0 ? note.count - 1 : note.count) : note)
       .toList();
   return notes;
 }

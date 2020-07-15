@@ -11,7 +11,6 @@ import 'package:test/models/AppState.dart';
 import 'package:test/redux/actions.dart';
 
 import '../models/Note.dart';
-//import 'package:test/models/NoteProvider.dart';
 import '../components/BottomBar.dart';
 import '../configs/Consts.dart' as Consts;
 
@@ -34,7 +33,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   @override
   void initState() {
     super.initState();
-//    _loadState();
     _hideFabAnimation = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: 1000)
@@ -68,7 +66,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
           body: Padding(
             padding: EdgeInsets.only(top:0),
             child: _listBuilderv2(),
-//            child: Container(),
           ),
           floatingActionButton: SlideTransition(
             child: _floatingButton(),
@@ -207,8 +204,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     );
   }
 
-  _refresh() => null;
-
   _addNewEntry() {
     final store = StoreProvider.of<AppState>(context);
     final int lastIndex = store.state.lastIndex;
@@ -233,7 +228,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   }
 
   _dislike(int index) {
-    StoreProvider.of<AppState>(context).dispatch(DislikeNoteAction(index));
+    final store = StoreProvider.of<AppState>(context);
+    if (store.state.notes.where((note) => note.index == index).first.count == 0) {
+      _showAlertDislike();
+    } else {
+      store.dispatch(DislikeNoteAction(index));
+    }
   }
 
   _delete(int index) {

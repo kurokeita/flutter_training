@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
-import 'package:test/redux/actions.dart';
 
 import '../configs/Consts.dart' as Consts;
 import 'package:test/models/AppState.dart';
+import 'package:test/redux/actions.dart';
 
 class BottomBar extends StatefulWidget {
   @override
@@ -14,11 +13,6 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   int _currentIndex;
-
-//  @override
-//  void initState() {
-//    super.initState();
-//  }
 
   void _changeScreen(int index) {
     final store = StoreProvider.of<AppState>(context);
@@ -78,7 +72,6 @@ class _BottomBarState extends State<BottomBar> {
         selectedItemColor: Colors.deepPurple,
         currentIndex: state.currentIndex,
         onTap: _changeScreen,
-//      unselectedItemColor: Color(0xFF000000).withOpacity(0.6),
         unselectedItemColor: Colors.white,
       )
     );
