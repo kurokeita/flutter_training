@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../configs/Consts.dart' as Consts;
 import '../components/BottomBar.dart';
 
 class Third extends StatefulWidget {

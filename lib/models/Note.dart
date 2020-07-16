@@ -1,25 +1,26 @@
 import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'Note.g.dart';
+
+@JsonSerializable()
 class Note {
   final int count;
   final int index;
 
   Note(this.index, this.count);
 
-  Map<String, int> toJson() => {
-    'count': count,
-    'index': index
-  };
+  factory Note.fromJson(Map<String, dynamic> json) => _$NoteFromJson(json);
 
-  Note.fromJson(Map<String, int> json)
-    : count = json['count'],
-      index = json['index'];
+  Map<String, dynamic> toJson() => _$NoteToJson(this);
 
   static String encodeNotes(List<Note> notes) => json.encode(notes);
 
-  static List<Note> decodeNotes(String jsonNotes) {
-    return (json.decode(jsonNotes) as List<dynamic>)
-        .map<Note>((note) => Note.fromJson(note))
+  static List<Note> decodeNotes(List<dynamic> notes) {
+    return notes
+        .map<Note>((note) {
+          return Note.fromJson(note);
+        })
         .toList();
   }
 }

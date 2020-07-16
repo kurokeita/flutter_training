@@ -1,18 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+
 import 'package:test/models/AppState.dart';
 import 'package:test/redux/actions.dart';
-
 import '../models/Note.dart';
 import '../components/BottomBar.dart';
-import '../configs/Consts.dart' as Consts;
 
 class Home extends StatefulWidget {
   @override
@@ -20,8 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
-  List<Note> _state = [];
-  int _lastIndex = 0;
   final dataKey = new GlobalKey();
   final _scrollController = ScrollController();
   AnimationController _hideFabAnimation;
@@ -147,60 +141,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
       ),
       key: new GlobalKey(),
       onDismissed: (d) => _delete(note.index),
-    );
-  }
-
-  Widget _listTileBuilderv2(int i) {
-    return Dismissible(
-      child: ListTile(
-        leading: RawMaterialButton(
-          onPressed: () => {
-            null
-          },
-          child: Icon(
-            Icons.thumb_up,
-            color: Colors.white,
-          ),
-          fillColor: Colors.deepPurple,
-          shape: CircleBorder(),
-          constraints: BoxConstraints.tight(Size(40, 40)),
-        ),
-        title: Text('This is line number ${this._state[i].index}'),
-        subtitle: Text('Liked ${this._state[i].count} times'),
-        trailing: Wrap(
-          spacing: 10,
-          children: <Widget>[
-            RawMaterialButton(
-              onPressed: () => {
-                null
-              },
-              child: Icon(
-                Icons.thumb_down,
-                color: Colors.white,
-              ),
-              fillColor: Colors.redAccent,
-              shape: CircleBorder(),
-              constraints: BoxConstraints.tight(Size(40,40)),
-            ),
-            RawMaterialButton(
-              onPressed: () => {
-                null
-              },
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-              fillColor: Colors.red,
-              shape: CircleBorder(),
-              constraints: BoxConstraints.tight(Size(40,40)),
-            )
-          ],
-        ),
-      ),
-      key: new GlobalKey(),
-      onDismissed: (d) => {
-        null
-      },
     );
   }
 

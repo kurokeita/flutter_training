@@ -12,12 +12,9 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  int _currentIndex;
-
   void _changeScreen(int index) {
     final store = StoreProvider.of<AppState>(context);
-    store.dispatch(UpdateCurrentIndexAction(index));
-    if (_currentIndex != index) {
+    if (store.state.currentTabIndex != index) {
       switch (index) {
         case Consts.HOME:
           Navigator.pushNamedAndRemoveUntil(context, Consts.HOME_ROUTE, (route) => false);
@@ -44,6 +41,7 @@ class _BottomBarState extends State<BottomBar> {
           break;
       }
     }
+    store.dispatch(UpdateCurrentTabIndexAction(index));
   }
 
   @override
@@ -70,7 +68,7 @@ class _BottomBarState extends State<BottomBar> {
           )
         ],
         selectedItemColor: Colors.deepPurple,
-        currentIndex: state.currentIndex,
+        currentIndex: state.currentTabIndex,
         onTap: _changeScreen,
         unselectedItemColor: Colors.white,
       )

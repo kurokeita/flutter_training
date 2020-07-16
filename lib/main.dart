@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux_persist/redux_persist.dart';
+import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 
 import 'router.dart';
 import 'configs/Consts.dart' as Consts;
@@ -10,10 +12,10 @@ import 'package:test/redux/reducers.dart';
 import 'package:test/models/AppState.dart';
 
 class MyApp extends StatelessWidget {
-  final store = Store(
-    appStateReducers,
-    initialState: AppState.empty()
-  );
+  final Store<AppState> store;
+
+  MyApp({@required this.store});
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -33,4 +35,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void main () => runApp(MyApp());
+void main () async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final persistor = Persistor<AppState>(
+    storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
+    serializer: JsonSerializer<AppState>(AppState.fromJSON)
+  );
+
+  final initialState = await persistor.load();
+
+  final store = Store<AppState>(
+    appStateReducers,
+    initialState: initialState ?? AppState.empty(),
+    middleware: [persistor.createMiddleware()]
+  );
+
+  runApp(MyApp(store: store));
+}

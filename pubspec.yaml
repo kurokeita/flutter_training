@@ -32,6 +32,8 @@ dependencies:
   package_info:
   provider:
   flutter_redux:
+  redux_persist_flutter:
+  json_annotation:
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +41,8 @@ dev_dependencies:
   change_app_package_name: ^0.1.2
   flutter_launcher_icons: ^0.7.3
   flutter_native_splash:
+  build_runner:
+  json_serializable:
 
 flutter_icons:
   android: "launcher_icon"

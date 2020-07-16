@@ -9,7 +9,6 @@ import 'configs/Consts.dart' as Consts;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final Map<String, Function> args = settings.arguments;
     switch (settings.name) {
       case Consts.SECOND_ROUTE:
         return PageRouteBuilder(

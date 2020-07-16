@@ -24,11 +24,27 @@ class DeleteNoteAction {
   DeleteNoteAction(this.index);
 }
 
+class LikeAllAction {
+  LikeAllAction();
+}
+
+class DislikeAllAction {
+  DislikeAllAction();
+}
+
+class ResetCounterAction {
+  ResetCounterAction();
+}
+
+class DeleteAllAction {
+  DeleteAllAction();
+}
+
 class UpdateLastIndexAction {
   UpdateLastIndexAction();
 }
 
-class UpdateCurrentIndexAction {
+class UpdateCurrentTabIndexAction {
   final int currentIndex;
-  UpdateCurrentIndexAction(this.currentIndex);
+  UpdateCurrentTabIndexAction(this.currentIndex);
 }

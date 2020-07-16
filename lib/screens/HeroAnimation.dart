@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 
 import '../configs/Consts.dart' as Consts;
 import '../components/BottomBar.dart';
