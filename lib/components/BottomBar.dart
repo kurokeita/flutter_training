@@ -17,25 +17,17 @@ class _BottomBarState extends State<BottomBar> {
     if (store.state.currentTabIndex != index) {
       switch (index) {
         case Consts.HOME:
-          Navigator.pushNamedAndRemoveUntil(context, Consts.HOME_ROUTE, (route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              context, Consts.HOME_ROUTE, (route) => false);
           break;
         case Consts.SECOND:
-          Navigator.pushNamed(
-            context,
-            Consts.SECOND_ROUTE
-          );
+          Navigator.pushNamed(context, Consts.SECOND_ROUTE);
           break;
         case Consts.ANIMATION:
-          Navigator.pushNamed(
-            context,
-            Consts.ANIMATION_ROUTE
-          );
+          Navigator.pushNamed(context, Consts.ANIMATION_ROUTE);
           break;
         case Consts.HERO:
-          Navigator.pushNamed(
-            context,
-            Consts.HERO_ROUTE
-          );
+          Navigator.pushNamed(context, Consts.HERO_ROUTE);
           break;
         default:
           break;
@@ -47,31 +39,27 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
-      converter: (store) => store.state,
-      builder: (context, state) => BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call_to_action),
-            title: Text('Actions'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.insert_chart),
-              title: Text('Animated Widget')
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.widgets),
-              title: Text('Hero')
-          )
-        ],
-        selectedItemColor: Colors.deepPurple,
-        currentIndex: state.currentTabIndex,
-        onTap: _changeScreen,
-        unselectedItemColor: Colors.white,
-      )
-    );
+        converter: (store) => store.state,
+        builder: (context, state) => BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text('Home'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.call_to_action),
+                  title: Text('Actions'),
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.insert_chart),
+                    title: Text('Animated Widget')),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.widgets), title: Text('Hero'))
+              ],
+              selectedItemColor: Colors.deepPurple,
+              currentIndex: state.currentTabIndex,
+              onTap: _changeScreen,
+              unselectedItemColor: Colors.white,
+            ));
   }
 }

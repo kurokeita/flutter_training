@@ -5,10 +5,9 @@ import 'package:test/redux/LastIndexReducer.dart';
 import 'package:test/redux/actions.dart';
 
 AppState appStateReducers(AppState state, dynamic action) => AppState(
-  notes: notesReducer(state.notes, action),
-  lastIndex: lastIndexReducer(state.lastIndex, action),
-  currentTabIndex: currentTabIndexReducer(state.currentTabIndex, action)
-);
+    notes: notesReducer(state.notes, action),
+    lastIndex: lastIndexReducer(state.lastIndex, action),
+    currentTabIndex: currentTabIndexReducer(state.currentTabIndex, action));
 
 AppState loadAppStateReducer(AppState state, LoadStateAction action) {
   return AppState.loadFromSharedPreference() as AppState;

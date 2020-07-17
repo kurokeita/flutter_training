@@ -22,23 +22,16 @@ class _ThirdState extends State<Third> with TickerProviderStateMixin<Third> {
   @override
   void initState() {
     super.initState();
-    _rotationController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 20)
-    );
-    _colorController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 3)
-    );
-    _colorTween = ColorTween(
-      begin: _begin,
-      end: _end
-    ).animate(_colorController)
-    ..addListener(() {
-      setState(() {
-        _currentColor = _colorTween.value;
+    _rotationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 20));
+    _colorController =
+        AnimationController(vsync: this, duration: Duration(seconds: 3));
+    _colorTween = ColorTween(begin: _begin, end: _end).animate(_colorController)
+      ..addListener(() {
+        setState(() {
+          _currentColor = _colorTween.value;
+        });
       });
-    });
   }
 
   @override
@@ -103,4 +96,3 @@ class _ThirdState extends State<Third> with TickerProviderStateMixin<Third> {
     _colorController.stop();
   }
 }
-

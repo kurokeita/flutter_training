@@ -23,14 +23,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
   File _image;
   final picker = ImagePicker();
 
-
   @override
   void initState() {
     super.initState();
     _hideFabAnimation = AnimationController(
-        vsync: this,
-        duration: Duration(milliseconds: 1000)
-    );
+        vsync: this, duration: Duration(milliseconds: 1000));
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(0.0, 3.0),
@@ -53,12 +50,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
         onNotification: _handleScrollNotification,
         child: Scaffold(
           appBar: AppBar(
-              title: const Text('Like - Dislike', textAlign: TextAlign.right,),
+              title: const Text(
+                'Like - Dislike',
+                textAlign: TextAlign.right,
+              ),
               backgroundColor: Colors.deepPurple,
-              automaticallyImplyLeading: false
-          ),
+              automaticallyImplyLeading: false),
           body: Padding(
-            padding: EdgeInsets.only(top:0),
+            padding: EdgeInsets.only(top: 0),
             child: _listBuilderv2(),
           ),
           floatingActionButton: SlideTransition(
@@ -66,17 +65,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             position: _offsetAnimation,
           ),
           bottomNavigationBar: BottomBar(),
-        )
-    );
+        ));
   }
 
   Widget _floatingButton() {
     return FloatingActionButton(
       onPressed: () => _addNewEntry(),
       tooltip: 'Floating button',
-      child: Icon(
-          Icons.add
-      ),
+      child: Icon(Icons.add),
       backgroundColor: Colors.deepPurple,
     );
   }
@@ -85,9 +81,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     return StoreConnector<AppState, List<Note>>(
       converter: (store) => store.state.notes,
       builder: (context, notes) {
-        List<Widget> _list = notes.map(
-            (note) => _listTileBuilder(note)
-        ).toList();
+        List<Widget> _list =
+            notes.map((note) => _listTileBuilder(note)).toList();
         return ListView(
           children: _list,
           controller: _scrollController,
@@ -123,7 +118,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
                 ),
                 fillColor: Colors.redAccent,
                 shape: CircleBorder(),
-                constraints: BoxConstraints.tight(Size(40,40)),
+                constraints: BoxConstraints.tight(Size(40, 40)),
               ),
               RawMaterialButton(
                 onPressed: () => _openImagePicker(),
@@ -133,7 +128,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
                 ),
                 fillColor: Colors.grey,
                 shape: CircleBorder(),
-                constraints: BoxConstraints.tight(Size(40,40)),
+                constraints: BoxConstraints.tight(Size(40, 40)),
               )
             ],
           ),
@@ -150,12 +145,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     store.dispatch(AddNoteAction(Note(lastIndex + 1, 0)));
     store.dispatch(UpdateLastIndexAction());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 200),
-          curve: Curves.linear
-      );
-      if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 200), curve: Curves.linear);
+      if (_scrollController.offset ==
+          _scrollController.position.maxScrollExtent) {
         _hideFabAnimation.reverse();
       } else {
         _hideFabAnimation.forward();
@@ -169,7 +162,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   _dislike(int index) {
     final store = StoreProvider.of<AppState>(context);
-    if (store.state.notes.where((note) => note.index == index).first.count == 0) {
+    if (store.state.notes.where((note) => note.index == index).first.count ==
+        0) {
       _showAlertDislike();
     } else {
       store.dispatch(DislikeNoteAction(index));
@@ -199,8 +193,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             title: Text('Like is already at 0'),
             content: Image.asset('assets/images/pony.gif'),
           );
-        }
-    );
+        });
   }
 
   Future _showPickedImage() async {
@@ -217,10 +210,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
                     _image,
                   ),
                 ),
-              )
-          );
-        }
-    );
+              ));
+        });
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
@@ -233,7 +224,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
             _hideFabAnimation.forward();
             break;
           case ScrollDirection.idle:
-            if (_scrollController.offset != _scrollController.position.maxScrollExtent) {
+            if (_scrollController.offset !=
+                _scrollController.position.maxScrollExtent) {
               _hideFabAnimation.reverse();
             } else {
               _hideFabAnimation.forward();

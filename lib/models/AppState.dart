@@ -14,24 +14,21 @@ class AppState {
 
   AppState({this.notes, this.lastIndex, this.currentTabIndex});
 
-  factory AppState.empty() => AppState(
-    notes: List<Note>(),
-    lastIndex: 0,
-    currentTabIndex: 0
-  );
+  factory AppState.empty() =>
+      AppState(notes: List<Note>(), lastIndex: 0, currentTabIndex: 0);
 
   Map<String, dynamic> toJson() => _$AppStateToJson(this);
 
-  factory AppState.fromJson(Map<String, dynamic> json) => _$AppStateFromJson(json);
+  factory AppState.fromJson(Map<String, dynamic> json) =>
+      _$AppStateFromJson(json);
 
   static AppState fromJSON(dynamic json) {
-    return json == null ?
-            AppState.empty() :
-            AppState(
-              notes: Note.decodeNotes(json['notes']),
-              lastIndex: json['lastIndex'] as int,
-              currentTabIndex: 0
-            );
+    return json == null
+        ? AppState.empty()
+        : AppState(
+            notes: Note.decodeNotes(json['notes']),
+            lastIndex: json['lastIndex'] as int,
+            currentTabIndex: 0);
   }
 
   Future saveToSharedPreference() async {
@@ -42,7 +39,8 @@ class AppState {
 
   static Future loadFromSharedPreference() async {
     final prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic> _appStateString = prefs.getString('_appState') as Map<String, dynamic>;
+    Map<String, dynamic> _appStateString =
+        prefs.getString('_appState') as Map<String, dynamic>;
     if (!['', null].contains(_appStateString)) {
       AppState.fromJson(_appStateString);
     } else {

@@ -35,21 +35,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void main () async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final persistor = Persistor<AppState>(
-    storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
-    serializer: JsonSerializer<AppState>(AppState.fromJSON)
-  );
+      storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
+      serializer: JsonSerializer<AppState>(AppState.fromJSON));
 
   final initialState = await persistor.load();
 
-  final store = Store<AppState>(
-    appStateReducers,
-    initialState: initialState ?? AppState.empty(),
-    middleware: [persistor.createMiddleware()]
-  );
+  final store = Store<AppState>(appStateReducers,
+      initialState: initialState ?? AppState.empty(),
+      middleware: [persistor.createMiddleware()]);
 
   runApp(MyApp(store: store));
 }

@@ -23,15 +23,13 @@ class _HeroWidgetState extends State<HeroWidget> {
         child: Hero(
           tag: 'imageHero',
           child: GestureDetector(
-            child: ClipOval(
-              child: Image.asset(
-                'assets/icons/icon.jpg',
-                width: 100,
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/icons/icon.jpg',
+                  width: 100,
+                ),
               ),
-
-            ),
-            onTap: () => Navigator.pushNamed(context, Consts.HERO2_ROUTE)
-          ),
+              onTap: () => Navigator.pushNamed(context, Consts.HERO2_ROUTE)),
           transitionOnUserGestures: true,
         ),
       ),
@@ -54,27 +52,24 @@ class _TestState extends State<Test> {
         backgroundColor: Colors.deepPurple,
       ),
       body: Center(
-        child: SizedBox(
-          width: 300,
-          height: 300,
-          child: Hero(
-            tag: 'imageHero',
-            child: GestureDetector(
+          child: SizedBox(
+        width: 300,
+        height: 300,
+        child: Hero(
+          tag: 'imageHero',
+          child: GestureDetector(
               child: ClipRRect(
                 child: Image.asset(
                   'assets/icons/icon.jpg',
                 ),
                 borderRadius: BorderRadius.circular(25.0),
               ),
-              onTap: () => Navigator.pushNamed(context, Consts.HERO_ROUTE)
-            ),
-            transitionOnUserGestures: true,
-          ),
-        )
-      ),
+              onTap: () => Navigator.pushNamed(context, Consts.HERO_ROUTE)),
+          transitionOnUserGestures: true,
+        ),
+      )),
       bottomNavigationBar: BottomBar(),
 //      backgroundColor: Colors.black,
     );
   }
 }
-

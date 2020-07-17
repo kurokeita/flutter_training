@@ -10,14 +10,18 @@ List<Note> addNoteReducer(List<Note> notes, AddNoteAction action) {
 
 List<Note> likeNoteReducer(List<Note> notes, LikeNoteAction action) {
   final int index = action.index;
-  notes = notes.map((note) => note.index == index ? Note(index, note.count + 1) : note)
+  notes = notes
+      .map((note) => note.index == index ? Note(index, note.count + 1) : note)
       .toList();
   return notes;
 }
 
 List<Note> dislikeNoteReducer(List<Note> notes, DislikeNoteAction action) {
   final int index = action.index;
-  notes = notes.map((note) => note.index == index ? Note(index, note.count > 0 ? note.count - 1 : note.count) : note)
+  notes = notes
+      .map((note) => note.index == index
+          ? Note(index, note.count > 0 ? note.count - 1 : note.count)
+          : note)
       .toList();
   return notes;
 }
@@ -33,7 +37,9 @@ List<Note> likeAllReducer(List<Note> notes, LikeAllAction action) {
 }
 
 List<Note> dislikeAllReducer(List<Note> notes, DislikeAllAction action) {
-  return notes.map((note) => Note(note.index, note.count > 0 ? note.count - 1: 0)).toList();
+  return notes
+      .map((note) => Note(note.index, note.count > 0 ? note.count - 1 : 0))
+      .toList();
 }
 
 List<Note> resetCounterReducer(List<Note> notes, ResetCounterAction action) {

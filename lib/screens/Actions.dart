@@ -7,7 +7,6 @@ import 'package:test/redux/actions.dart';
 import '../components/BottomBar.dart';
 
 class Second extends StatefulWidget {
-
   @override
   _SecondState createState() => _SecondState();
 }
@@ -16,7 +15,10 @@ class _SecondState extends State<Second> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Actions', textAlign: TextAlign.right,),
+        title: Text(
+          'Actions',
+          textAlign: TextAlign.right,
+        ),
         backgroundColor: Colors.deepPurple,
       ),
       body: Center(
@@ -48,19 +50,21 @@ class _SecondState extends State<Second> {
                 ),
               ],
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch
-          ),
+              crossAxisAlignment: CrossAxisAlignment.stretch),
         ),
       ),
       bottomNavigationBar: BottomBar(),
     );
   }
 
-  _reset() => StoreProvider.of<AppState>(context).dispatch(ResetCounterAction());
+  _reset() =>
+      StoreProvider.of<AppState>(context).dispatch(ResetCounterAction());
 
-  _deleteAll() => StoreProvider.of<AppState>(context).dispatch(DeleteAllAction());
+  _deleteAll() =>
+      StoreProvider.of<AppState>(context).dispatch(DeleteAllAction());
 
   _likeAll() => StoreProvider.of<AppState>(context).dispatch(LikeAllAction());
 
-  _dislikeAll() => StoreProvider.of<AppState>(context).dispatch(DislikeAllAction());
+  _dislikeAll() =>
+      StoreProvider.of<AppState>(context).dispatch(DislikeAllAction());
 }
