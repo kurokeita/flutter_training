@@ -24,14 +24,22 @@ class MyApp extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.light,
     ));
     return StoreProvider(
-      store: store,
-      child: MaterialApp(
-        theme: ThemeData.dark(),
-        title: "Kuro's notes",
-        onGenerateRoute: Router.generateRoute,
-        initialRoute: Consts.HOME_ROUTE,
-      ),
-    );
+        store: store,
+        // child: MaterialApp(
+        //   theme: ThemeData.light(),
+        //   title: "Kuro's notes",
+        //   onGenerateRoute: Router.generateRoute,
+        //   initialRoute: Consts.HOME_ROUTE,
+        // ),
+        child: StoreConnector<AppState, bool>(
+          converter: (store) => store.state.theme,
+          builder: (context, theme) => MaterialApp(
+            theme: theme ? ThemeData.dark() : ThemeData.light(),
+            title: "Kuro's notes",
+            onGenerateRoute: Router.generateRoute,
+            initialRoute: Consts.HOME_ROUTE,
+          ),
+        ));
   }
 }
 

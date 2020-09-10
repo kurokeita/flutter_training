@@ -48,3 +48,8 @@ class UpdateCurrentTabIndexAction {
   final int currentIndex;
   UpdateCurrentTabIndexAction(this.currentIndex);
 }
+
+class ToggleThemeAction {
+  final bool theme;
+  ToggleThemeAction(this.theme);
+}

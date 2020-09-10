@@ -58,7 +58,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
               automaticallyImplyLeading: false),
           body: Padding(
             padding: EdgeInsets.only(top: 0),
-            child: _listBuilderv2(),
+            child: _listBuilderV2(),
           ),
           floatingActionButton: SlideTransition(
             child: _floatingButton(),
@@ -77,7 +77,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
     );
   }
 
-  Widget _listBuilderv2() {
+  Widget _listBuilderV2() {
     return StoreConnector<AppState, List<Note>>(
       converter: (store) => store.state.notes,
       builder: (context, notes) {
@@ -172,6 +172,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin<Home> {
 
   _delete(int index) {
     StoreProvider.of<AppState>(context).dispatch(DeleteNoteAction(index));
+    print(index);
   }
 
   Future _openImagePicker() async {

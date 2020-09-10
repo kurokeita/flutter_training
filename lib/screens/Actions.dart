@@ -48,6 +48,10 @@ class _SecondState extends State<Second> {
                   onPressed: () => _deleteAll(),
                   child: Text('Delete all'),
                 ),
+                RaisedButton(
+                  onPressed: () => _toggleTheme(),
+                  child: Text('Toggle theme'),
+                ),
               ],
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.stretch),
@@ -67,4 +71,9 @@ class _SecondState extends State<Second> {
 
   _dislikeAll() =>
       StoreProvider.of<AppState>(context).dispatch(DislikeAllAction());
+
+  _toggleTheme() {
+    final state = StoreProvider.of<AppState>(context).state;
+    StoreProvider.of<AppState>(context).dispatch(ToggleThemeAction(state.theme));
+  }
 }

@@ -14,6 +14,7 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
         ?.toList(),
     lastIndex: json['lastIndex'] as int,
     currentTabIndex: json['currentTabIndex'] as int,
+    theme: json['theme'] as bool
   );
 }
 
@@ -21,4 +22,5 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'notes': instance.notes,
       'lastIndex': instance.lastIndex,
       'currentTabIndex': instance.currentTabIndex,
+      'theme': instance.theme,
     };

@@ -11,11 +11,12 @@ class AppState {
   final List<Note> notes;
   final int lastIndex;
   final int currentTabIndex;
+  final bool theme;
 
-  AppState({this.notes, this.lastIndex, this.currentTabIndex});
+  AppState({this.notes, this.lastIndex, this.currentTabIndex, this.theme});
 
   factory AppState.empty() =>
-      AppState(notes: List<Note>(), lastIndex: 0, currentTabIndex: 0);
+      AppState(notes: List<Note>(), lastIndex: 0, currentTabIndex: 0, theme: true);
 
   Map<String, dynamic> toJson() => _$AppStateToJson(this);
 
@@ -28,7 +29,8 @@ class AppState {
         : AppState(
             notes: Note.decodeNotes(json['notes']),
             lastIndex: json['lastIndex'] as int,
-            currentTabIndex: 0);
+            currentTabIndex: 0,
+            theme: json['theme'] as bool);
   }
 
   Future saveToSharedPreference() async {
